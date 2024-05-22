@@ -4,8 +4,6 @@ Created on Mon May 20 15:33:00 2024
 
 @author: EMRE KARATAS
 
-recommender system based on user_id, movie_id !!!
-test verileri farklı olması gerekiyor, aynı user_id ve movie_id sisteme gelmemeli test kısmında !!!
 """
 
 
@@ -34,7 +32,8 @@ movie_ratings.columns = ['movieId', 'avg_rating']
 # Merge with the movies dataframe
 movies = movies.merge(movie_ratings, on='movieId', how='left')
 
-# Split the ratings data into training and testing sets
+
+# Split the ratings data into training and testing sets (so that test datas are different!)
 train_data, test_data = train_test_split(ratings, test_size=0.2, random_state=42)
 
 # Update the training data for the models
@@ -45,6 +44,8 @@ movies_train = movies.merge(movie_ratings_train, on='movieId', how='left')
 user_movie_matrix_train = train_data.pivot(index='userId', columns='movieId', values='rating').fillna(0)
 scaler = StandardScaler()
 user_movie_matrix_train_scaled = scaler.fit_transform(user_movie_matrix_train)
+
+
 
 # Function to recommend based on genre with user-based collaborative filtering
 def recommend_by_genre(user_id, movie_id, top_n=5):
@@ -71,6 +72,8 @@ def recommend_by_cluster(user_id, user_cluster_df, top_n=5):
     similar_users_ratings = train_data[train_data['userId'].isin(similar_users)]
     top_rated_movies = similar_users_ratings.groupby('movieId')['rating'].mean().sort_values(ascending=False).head(top_n).index
     recommendations = movies_train[movies_train['movieId'].isin(top_rated_movies)]
+    recommendations = recommendations.drop(columns=['avg_rating_x'])
+    recommendations = recommendations.rename(columns={'avg_rating_y': 'avg_rating'})
     return recommendations[['movieId', 'title', 'avg_rating']]
 
 # Evaluate rule-based recommender
@@ -97,6 +100,15 @@ def evaluate_clustering_based_model(test_data, n_clusters):
             predicted_ratings = np.pad(predicted_ratings, (0, len(actual_ratings) - len(predicted_ratings)), 'constant', constant_values=(0, 0))
         mse_list.append(mean_squared_error(actual_ratings, predicted_ratings))
     return np.mean(mse_list)
+
+"""
+user_cluster_df = apply_kmeans(5)
+user_cluster = user_cluster_df[user_cluster_df['userId'] == 102]['cluster'].values[0]
+similar_users = user_cluster_df[user_cluster_df['cluster'] == user_cluster]['userId'].values
+similar_users_ratings = train_data[train_data['userId'].isin(similar_users)]
+top_rated_movies = similar_users_ratings.groupby('movieId')['rating'].mean().sort_values(ascending=False).head(5).index
+recommendations = movies_train[movies_train['movieId'].isin(top_rated_movies)]
+"""
 
 # Calculate MSE for both models
 rule_based_mse = evaluate_rule_based_model(test_data)

@@ -34,9 +34,6 @@ movies['genres'] = movies['genres'].apply(lambda x: x.split('|'))
 
 print("\n")
 
-# Display the modified dataframe
-print(movies.head())
-print("\n")
 
 
 # Calculate average rating for each movie
@@ -91,7 +88,7 @@ def recommend_by_cluster(user_id, top_n=5):
     recommendations = movies[movies['movieId'].isin(top_rated_movies)]
     return recommendations[['movieId', 'title', 'avg_rating']]
 
-
+"""
 print("\n")
 
 # Example usage
@@ -100,7 +97,7 @@ print(recommend_by_genre(1, 1))
 print("\n")
 # Example usage
 print(recommend_by_cluster(1))
-
+"""
 print("\n")
 
 
