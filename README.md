@@ -27,7 +27,7 @@ Open your terminal and navigate to the directory where the repository is cloned.
 ### Step 3: Running the Script
 Reproduce the experiment by running:
 ```bash
-python recommender.py
+python Movie_Recommendation.py
 ```
 
 ### The Output
@@ -45,10 +45,10 @@ The final output will display the MSE and the denormalized MSE for the combined 
 You should see the MSE and denormalized MSE printed in your terminal after you start the program. This will indicate the performance of the recommender system.
 
 ## File Descriptions
-- `recommender.py`: Main Python script for the experiment.
+- `Movie_Recommendation.py`: Main Python script for the experiment.
 - `movies.csv`: Dataset containing movie details such as movie ID, title, and genres.
 - `ratings.csv`: Dataset containing user rating details such as user ID, movie ID, rating and timestamp.
-- `results.png`: PNG file which shows the produced results after running the `recommender.py` correctly.
+- `results.png`: PNG file which shows the produced results after running the `Movie_Recommendation.py` correctly.
 - `ProgramNotes.txt`: Tex file containing information regarding runtime which states "The Program runtime is about 2-3 minutes!".
 
-For any issues or further queries, refer to the comments in the `recommender.py` script for more detailed information about the functions and methodology used.
+For any issues or further queries, refer to the comments in the `Movie_Recommendation.py` script for more detailed information about the functions and methodology used.
